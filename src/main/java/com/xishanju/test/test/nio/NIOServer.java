@@ -3,7 +3,6 @@ package com.xishanju.test.test.nio;
 import com.xishanju.test.test.utils.CharsetHelper;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;

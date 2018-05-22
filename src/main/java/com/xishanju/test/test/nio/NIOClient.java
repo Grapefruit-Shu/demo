@@ -44,9 +44,11 @@ public class NIOClient implements Runnable{
     public static void main(String[] args) {
         NIOClient client = null;
         try {
-            client = new NIOClient("localhost",2000);
-            client.init();
-            new Thread(client).start();
+            while (true) {
+                client = new NIOClient("localhost", 2000);
+                client.init();
+                new Thread(client).start();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,8 +94,7 @@ public class NIOClient implements Runnable{
             //4. 请求关心连接事件
             channel.register(selector, SelectionKey.OP_CONNECT);
 
-            boolean isOver = false;
-            while (!isOver) {
+            while (true) {
                 selector.select();
                 Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
                 while (keys.hasNext()) {
@@ -118,8 +119,6 @@ public class NIOClient implements Runnable{
                         String word = getWord();
                         if (word != null) {
                             channel.write(CharsetHelper.encode(CharBuffer.wrap(getWord())));
-                        } else {
-                            isOver = true;
                         }
                         sleep();
                     }
@@ -127,15 +126,6 @@ public class NIOClient implements Runnable{
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            //7. 关闭通道
-            if (channel != null) {
-                try {
-                    channel.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
